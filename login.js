@@ -6,6 +6,8 @@ function create(){
     // Handle Errors here.
     var errorCode = error.code;
     var errorMessage = error.message;
+
+    window.alert("Error: ") + errorMessage
     // ...
 });
 }
@@ -18,13 +20,14 @@ function login(){
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
+        window.alert("Error: " + errorMessage)
         // ...
       });
+      var user = firebase.auth().currentUser;
+
+      if (user) {
+        console.log(user.email);
+      } else {
+        console.log("womp womp womp")
+      }
 }
-firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      console.log("worked")
-    } else {
-      console.log("didn't work")
-    }
-  });
