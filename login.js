@@ -1,15 +1,21 @@
 function create(){
     var email = document.getElementById("emailin").value
     console.log(email)
+    var errNum = 0;
     var password = document.getElementById("passwordin").value;
+    var userRef = firebase.database().ref().child("users")
     firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
     // Handle Errors here.
     var errorCode = error.code;
     var errorMessage = error.message;
-
+    errNum++;
     window.alert("Error: ") + errorMessage
+
     // ...
 });
+    if (errNum == 0){
+        userRef.push().set({"user_email" : email})
+    }
 }
 
 function login(){
