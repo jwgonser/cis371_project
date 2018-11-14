@@ -4,7 +4,17 @@
 <head>
 
 </head>
+<body>
 
+  <h1>Hello World</h1>
+  <div class="login-info">
+    <input type="email" placeholder="Enter Email" id="emailin"/>
+    <input type="password" placeholder="Enter Password" id="passwordin"/>
+    <button onclick="create()">Create New User</button>
+  </div>
+  
+  
+  
 <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
 <script>
   // Initialize Firebase
@@ -18,16 +28,6 @@
   };
   firebase.initializeApp(config);
 </script>
-<script>src="login.js"</script>
-
-
-
-<body>
-
-<h1>Hello World</h1>
-
+<script src="login.js"></script>
 </body>
-
-
-
-<html>
+</html>
