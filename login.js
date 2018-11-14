@@ -26,7 +26,7 @@ function login(){
       var user = firebase.auth().currentUser;
 
       if (user) {
-        console.log(user.email);
+        window.location="https://cis.gvsu.edu/~gonserj/project/cis371_project/main.html";
       } else {
         console.log("womp womp womp")
       }
