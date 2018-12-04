@@ -1,33 +1,56 @@
 <!DOCTYPE html>
 <html>
 
-<head>
+	<head>
+		<link rel="stylesheet" type="text/css" href="stylesheet.css"/>
+	</head>
+	<body>
 
-</head>
+	  <!-- Login Page --> 
+	  <div id="login-page">
+		  <h1> Welcome to ->Insert Store Name<h1>
+		  <h2> Please Login or Register!<h2>
+		  <input type="email" placeholder="Enter Email" id="emailin"/><br>
+		  <input type="password" placeholder="Enter Password" id="passwordin"/><br>
+		  <button onclick="create()">Sign Up</button>
+		  <button onclick="login()">Login</button>
+	  </div>
+	  
+	  <!-- Inventory Page -->
+	  <div id="inventory-page" class="hidden">
+		  <table id="inventory-table" class="tblfmt"></table>
+		  <button onclick="logout()">Logout</button>
+		  <button onclick="checkout()">Check out</button>
+	  </div>
+	  
+	  <!-- Checkout Page -->
+	  <div id="checkout-page" class="hidden">
+		  <table id="checkout-table" class="tblfmt"></table>
+		  <button onclick="logout()">Logout</button>
+		  <button onclick="toInventory()">Back to Shop</button>
+		  <button onclick="purchase()">Purchase Items</button>
+	  </div>
+	  
+	  
+	  
+	  
 
-<script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
-<script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyCY3o4deCplUlkMQbxNtRmcMC1SVjOeSaw",
-    authDomain: "cis371-project.firebaseapp.com",
-    databaseURL: "https://cis371-project.firebaseio.com",
-    projectId: "cis371-project",
-    storageBucket: "cis371-project.appspot.com",
-    messagingSenderId: "291219220669"
-  };
-  firebase.initializeApp(config);
-</script>
+	<!-- Firebase JS information --> 
+	<script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
+	<script>
+	  // Initialize Firebase
+	  var config = {
+		apiKey: "AIzaSyCY3o4deCplUlkMQbxNtRmcMC1SVjOeSaw",
+		authDomain: "cis371-project.firebaseapp.com",
+		databaseURL: "https://cis371-project.firebaseio.com",
+		projectId: "cis371-project",
+		storageBucket: "cis371-project.appspot.com",
+		messagingSenderId: "291219220669"
+	  };
+	  firebase.initializeApp(config);
+	</script>
+	<script src="main.js"></script>
 
 
-
-
-<body>
-
-<h1>This is the Main Page!</h1>
-
-</body>
-
-
-
-<html>
+	</body>
+</html>

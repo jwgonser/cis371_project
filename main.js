@@ -33,8 +33,59 @@ function login(){
 
       if (user) {
         console.log(user.email);
-		window.location="https://cis.gvsu.edu/~gonserj/project/cis371_project/main.html";
+		
+		hidePage("login-page");
+		showPage("inventory-page");
+		
       } else {
         console.log("womp womp womp")
       }
+}
+
+function logout(){
+	
+	//TODO: IMPLEMENT LOGGING OUT
+	
+	// hide both inventory and chckout, show login
+	hidePage("inventory-page");
+	hidePage("checkout-page");
+	showPage("login-page");
+}
+
+function purchase(){
+	//TODO: IMPLEMENT ANY PURCHASING LOGIC
+}
+
+function addItemToCart(itemId) {
+	//TODO: ADD LOGIC TO ADD A CHOSEN ITEM TO USER'S CART
+}
+
+function removeItemFromCart(itemId) {
+	//TODO: ADD LOGIC TO REMOVE A CHOSEN ITEM FROM USER'S CART
+}
+
+function checkout(){
+	hidePage("inventory-page");
+	showPage("checkout-page");
+}
+
+function toInventory() {
+	hidePage("checkout-page");
+	showPage("inventory-page");
+}
+
+function hidePage(pageId){
+	// get element identified by function call
+	var element = document.getElementById(pageId);
+	// add hidden class to element
+	element.classList.add("hidden");
+	console.log("hiding " + pageId);
+}
+
+function showPage(pageId){
+	// get element identified by function call
+	var element = document.getElementById(pageId);
+	// remove hidden class from element
+	element.classList.remove("hidden");
+	console.log("showing " + pageId);
 }

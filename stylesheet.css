@@ -1,0 +1,18 @@
+.hidden {
+	display: none !important;
+}
+.tblfmt tr:nth-child(odd){
+	background-color: thistle;
+}
+.tblfmt tr:nth-child(even) {
+    background-color: powderblue;
+}
+.tblfmt tr:first-of-type {
+	background-color: black;
+	color: white;
+}
+.hidden {
+	display: none !important;
+}
+
+
