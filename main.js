@@ -50,6 +50,15 @@ function logout(){
 	hidePage("inventory-page");
 	hidePage("checkout-page");
 	showPage("login-page");
+	document.getElementById("passwordin").value = "";
+}
+
+function populateInventoryTable(){
+	//TODO: POPULATE THE INVENTORY SCREEN TABLE WITH ITEMS FROM PUBLIC INVENTORY TABLE
+}
+
+function populateCheckoutTable(){
+	//TODO: POPULATE THE CHECKOUT SCREEN TABLE WITH ITEMS FROM THE USER'S CART
 }
 
 function purchase(){
@@ -65,11 +74,13 @@ function removeItemFromCart(itemId) {
 }
 
 function checkout(){
+	// navigate to checkout page from inventory
 	hidePage("inventory-page");
 	showPage("checkout-page");
 }
 
 function toInventory() {
+	// navigate back to inventory from checkout page
 	hidePage("checkout-page");
 	showPage("inventory-page");
 }
