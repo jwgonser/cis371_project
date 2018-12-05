@@ -202,39 +202,48 @@ function purchase(){
 function addItemToCart(itemId) {
     var cart = {}
     var changed = 0
+    var inStock = 1
     console.log(users)
     console.log(itemId)
     console.log(email)
-    rootRef.child('/users').once('value').then(function(snapshot){
-        snapshot.forEach(function(ch){
-            ch.child("user_cart").forEach(function(ca){
-                if(ch.child("user_email").val() == email){
-                    console.log(ch.child("user_email").val())
-                    console.log(ca.key)
-                    console.log(ca.val())
-                    var temp = ca.val()
-                    if(ca.key == itemId){
-                        changed = 1
-                        rootRef.child('/users').child(ch.key).child('user_cart').child(ca.key).set(temp +1);
-                    }
+
+    rootRef.child('/inventory').once('value').then(function(snapshot){
+        snapshot.forEach(function(invent){
+            if(invent.key == itemId){
+                var tempo = invent.child('item_quantity').val()
+                if(tempo != 0){
+                    rootRef.child('/inventory').child(invent.key).child('item_quantity').set(tempo - 1)
+                }else{
+                    inStock = 0
+                    window.alert("out of stock")
                 }
-            })
-            if(ch.child("user_email").val() == email && changed == 0){
-                console.log("ITEM ID IS UNDER")
-                console.log(itemId)
-                rootRef.child('/users').child(ch.key).child('user_cart').update({[itemId] : 1})
             }
-            changed = 0
         })
     })
-    /*
-    if(ref.child(itemId)){
-        ref.child(itemId).val() = ref.child(itemId).val() + 1;
-    }else{
-        ref.push().set({itemid : 1});
+    if(inStock = 1){
+        rootRef.child('/users').once('value').then(function(snapshot){
+            snapshot.forEach(function(ch){
+                ch.child("user_cart").forEach(function(ca){
+                    if(ch.child("user_email").val() == email){
+                        console.log(ch.child("user_email").val())
+                        console.log(ca.key)
+                        console.log(ca.val())
+                        var temp = ca.val()
+                        if(ca.key == itemId){
+                            changed = 1
+                            rootRef.child('/users').child(ch.key).child('user_cart').child(ca.key).set(temp +1);
+                        }
+                    }
+                })
+                if(ch.child("user_email").val() == email && changed == 0){
+                    console.log("ITEM ID IS UNDER")
+                    console.log(itemId)
+                    rootRef.child('/users').child(ch.key).child('user_cart').update({[itemId] : 1})
+                }
+                changed = 0
+            })
+        })
     }
-    */
-    
 }
 
 function removeItemFromCart(itemId) {
