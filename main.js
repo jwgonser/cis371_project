@@ -49,8 +49,7 @@ function login(){
 }
 
 function logout(){
-	
-	//TODO: IMPLEMENT LOGGING OUT
+
 	firebase.auth().signOut().then(function() {
         console.log('Signed Out');
         window.alert("you have been logged out.")
@@ -77,11 +76,21 @@ function populateInventoryTable(snapshot){
     var node = document.createElement("tr");
     var tdName = document.createElement("td");
     var tdQuan = document.createElement("td");
+	var button = document.createElement("button");
+	button.onclick = addItemToCart;
     var txtName = document.createTextNode(itemName);
+	var butName = document.createTextNode("Add");
     tdName.appendChild(txtName);
     tdQuan.appendChild(txtQuan);
+	button.appendChild(butName);
     node.appendChild(tdName);
     node.appendChild(tdQuan);
+	if(itemQuan == 0){
+		node.appendChild(document.createTextNode("Unavailable"));
+	}
+	else {
+		node.appendChild(button);
+	}
 	node.id = snapshot.key;
     document.getElementById("inventory-table").appendChild(node);
 }
