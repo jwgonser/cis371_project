@@ -77,7 +77,27 @@ function populateInventoryTable(snapshot){
     tdQuan.appendChild(txtQuan);
     node.appendChild(tdName);
     node.appendChild(tdQuan);
+	node.id = snapshot.key;
     document.getElementById("inventory-table").appendChild(node);
+}
+
+function updateInventoryTable(snapshot){
+	var node = document.getElementById(snapshot.key);
+
+	while (node.firstChild) {
+		node.removeChild(node.firstChild);
+	}
+	
+	var itemName = snapshot.child("item_name").val();
+    var itemQuan = snapshot.child("item_quantity").val();
+    var tdName = document.createElement("td");
+    var tdQuan = document.createElement("td");
+    var txtName = document.createTextNode(itemName);
+    var txtQuan = document.createTextNode(itemQuan);
+	tdName.appendChild(txtName);
+    tdQuan.appendChild(txtQuan);
+    node.appendChild(tdName);
+    node.appendChild(tdQuan);
 }
 
 rootRef.child("inventory").on("child_added", function(snapshot){
@@ -85,7 +105,7 @@ rootRef.child("inventory").on("child_added", function(snapshot){
 })
 
 rootRef.child("inventory").on("child_changed", function(snapshot){
-    populateInventoryTable(snapshot);
+    updateInventoryTable(snapshot);
 })
 
 function populateCheckoutTable(){
