@@ -21,18 +21,22 @@ function create(){
 
 function login(){
     var email = document.getElementById("emailin").value
+    var fubar = 0
     console.log(email)
     var password = document.getElementById("passwordin").value;
     firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
+        fubar =1;
         window.alert("Error: " + errorMessage)
-        return 0;
+        
         // ...
       });
       var user = firebase.auth().currentUser;
-
+      if (fubar){
+          return 0;
+      }
       if (user) {
         console.log(user.email);
 		
@@ -61,12 +65,7 @@ function logout(){
 	document.getElementById("passwordin").value = "";
 }
 
-function populateInventoryTable(){
-    var frag = document.createDocumentFragment();
-    var table = document.createElement("table");
-}
-
-rootRef.child("inventory").on("child_added", function(snapshot){
+function populateInventoryTable(snapshot){
     var itemName = snapshot.child("item_name").val();
     var itemQuan = snapshot.child("item_quantity").val();
     var node = document.createElement("tr");
@@ -79,6 +78,14 @@ rootRef.child("inventory").on("child_added", function(snapshot){
     node.appendChild(tdName);
     node.appendChild(tdQuan);
     document.getElementById("inventory-table").appendChild(node);
+}
+
+rootRef.child("inventory").on("child_added", function(snapshot){
+    populateInventoryTable(snapshot);
+})
+
+rootRef.child("inventory").on("child_changed", function(snapshot){
+    populateInventoryTable(snapshot);
 })
 
 function populateCheckoutTable(){
