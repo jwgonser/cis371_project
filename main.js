@@ -1,4 +1,5 @@
 var rootRef = firebase.database().ref();
+var users ={}
 function create(){
     var email = document.getElementById("emailin").value
     console.log(email)
@@ -15,7 +16,10 @@ function create(){
     // ...
 });
     if (errNum == 0){
+        var userKey = userRef.push().key;
+        users[email] = userKey;
         userRef.push().set({"user_email" : email})
+        console.log(users)
     }
 }
 
@@ -33,7 +37,7 @@ function login(){
         
         // ...
       });
-      var user = firebase.auth().currentUser;
+      user = firebase.auth().currentUser;
       if (fubar){
           return 0;
       }
@@ -49,7 +53,7 @@ function login(){
 }
 
 function logout(){
-
+    
 	firebase.auth().signOut().then(function() {
         console.log('Signed Out');
         window.alert("you have been logged out.")
@@ -57,6 +61,7 @@ function logout(){
         hidePage("inventory-page");
 	    hidePage("checkout-page");
         showPage("login-page");
+        user = null
         
       }, function(error) {
         console.error('Sign Out Error', error);
@@ -129,9 +134,10 @@ rootRef.child("inventory").on("child_changed", function(snapshot){
 })
 
 function populateCheckoutTable(){
-	//TODO: POPULATE THE CHECKOUT SCREEN TABLE WITH ITEMS FROM THE USER'S CART
+    //TODO: POPULATE THE CHECKOUT SCREEN TABLE WITH ITEMS FROM THE USER'S CART
+    
 }
-
+rootRef.child("users")
 function purchase(){
 	
 }
