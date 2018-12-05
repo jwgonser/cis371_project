@@ -1,7 +1,6 @@
 var rootRef = firebase.database().ref();
 users ={}
 var inv = {"empty" : true}
-email = ""
 function create(){
     email = document.getElementById("emailin").value
     console.log(email)
@@ -33,7 +32,7 @@ function generateUsers(){
     })
 }
 function login(){
-    var email = document.getElementById("emailin").value
+    email = document.getElementById("emailin").value
     var fubar = 0
     console.log(email)
     var password = document.getElementById("passwordin").value;
@@ -201,12 +200,33 @@ function purchase(){
 }
 
 function addItemToCart(itemId) {
+    var cart = {}
+    var changed = 0
     console.log(users)
     console.log(itemId)
-    var ref = rootRef.child("users").child(users[email]).child("user_cart");
-    ref.once("value", function(data){
-        console.log(data.child(itemId).val());
-    });
+    console.log(email)
+    rootRef.child('/users').once('value').then(function(snapshot){
+        snapshot.forEach(function(ch){
+            ch.child("user_cart").forEach(function(ca){
+                if(ch.child("user_email").val() == email){
+                    console.log(ch.child("user_email").val())
+                    console.log(ca.key)
+                    console.log(ca.val())
+                    var temp = ca.val()
+                    if(ca.key == itemId){
+                        changed = 1
+                        rootRef.child('/users').child(ch.key).child('user_cart').child(ca.key).set(temp +1);
+                    }
+                }
+            })
+            if(ch.child("user_email").val() == email && changed == 0){
+                console.log("ITEM ID IS UNDER")
+                console.log(itemId)
+                rootRef.child('/users').child(ch.key).child('user_cart').update({[itemId] : 1})
+            }
+            changed = 0
+        })
+    })
     /*
     if(ref.child(itemId)){
         ref.child(itemId).val() = ref.child(itemId).val() + 1;
