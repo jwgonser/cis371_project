@@ -8,8 +8,8 @@
 
 	  <!-- Login Page --> 
 	  <div id="login-page">
-		  <h1> Welcome to ->Insert Store Name<h1>
-		  <h2> Please Login or Register!<h2>
+		  <h1> Welcome to ->Insert Store Name</h1>
+		  <h2> Please Login or Register!</h2>
 		  <input type="email" placeholder="Enter Email" id="emailin"/><br>
 		  <input type="password" placeholder="Enter Password" id="passwordin"/><br>
 		  <button onclick="create()">Sign Up</button>
@@ -46,7 +46,13 @@
 		  <button onclick="purchase()">Purchase Items</button>
 	  </div>
 	  
-	  
+	  <!-- Successful Purchase Screen -->
+	  <div id="purchase-page" class="hidden">
+			<h2>Thank you for your purchase!</h2>
+			<h3>Your items will arrive within 5-7 business days</h3>
+			<button onclick="logout()">Logout</button>
+		  <button onclick="toInventory()">Back to Shop</button>
+	  </div>
 	  
 	  
 

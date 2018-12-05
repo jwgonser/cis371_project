@@ -80,6 +80,7 @@ function logout(){
         // hide both inventory and chckout, show login
         hidePage("inventory-page");
 	    hidePage("checkout-page");
+		hidePage("purchase-page");
         showPage("login-page");
         user = null;
       }, function(error) {
@@ -275,7 +276,10 @@ function activateListeners() {
 }
 
 function purchase(){
-	
+	rootRef.child("users").child(users[email]).child("user_cart").remove();
+	rootRef.child("users").child(users[email]).update({"user_cart" : {"empty" : true}});
+	hidePage("checkout-page");
+	showPage("purchase-page");
 }
 
 function addItemToCart(itemId) {
@@ -361,6 +365,7 @@ function checkout(){
 function toInventory() {
 	// navigate back to inventory from checkout page
 	hidePage("checkout-page");
+	hidePage("purchase-page");
 	showPage("inventory-page");
 }
 
