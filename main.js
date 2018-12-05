@@ -33,7 +33,8 @@ function login(){
         
         // ...
       });
-      var user = firebase.auth().currentUser;
+      user = firebase.auth().currentUser;
+	  console.log(user);
       if (fubar){
           return 0;
       }
@@ -57,7 +58,7 @@ function logout(){
         hidePage("inventory-page");
 	    hidePage("checkout-page");
         showPage("login-page");
-        
+        user = null;
       }, function(error) {
         console.error('Sign Out Error', error);
       });
@@ -102,9 +103,11 @@ function updateInventoryTable(snapshot){
 		node.removeChild(node.firstChild);
 	}
 	
+	var button = document.createElement("button");
+	button.onclick = addItemToCart;
+	
 	var itemName = snapshot.child("item_name").val();
     var itemQuan = snapshot.child("item_quantity").val();
-    var txtQuan 
     if (itemQuan == 0){
         txtQuan = document.createTextNode("Out of stock");
     }else{
@@ -113,11 +116,18 @@ function updateInventoryTable(snapshot){
     var tdName = document.createElement("td");
     var tdQuan = document.createElement("td");
     var txtName = document.createTextNode(itemName);
-    
+    var butName = document.createTextNode("Add");
 	tdName.appendChild(txtName);
     tdQuan.appendChild(txtQuan);
+	button.appendChild(butName);
     node.appendChild(tdName);
     node.appendChild(tdQuan);
+	if(itemQuan == 0){
+		node.appendChild(document.createTextNode("Unavailable"));
+	}
+	else {
+		node.appendChild(button);
+	}
 }
 
 rootRef.child("inventory").on("child_added", function(snapshot){
