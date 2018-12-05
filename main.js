@@ -1,3 +1,4 @@
+var rootRef = firebase.database().ref();
 function create(){
     var email = document.getElementById("emailin").value
     console.log(email)
@@ -27,6 +28,7 @@ function login(){
         var errorCode = error.code;
         var errorMessage = error.message;
         window.alert("Error: " + errorMessage)
+        return 0;
         // ...
       });
       var user = firebase.auth().currentUser;
@@ -45,24 +47,46 @@ function login(){
 function logout(){
 	
 	//TODO: IMPLEMENT LOGGING OUT
-	
-	// hide both inventory and chckout, show login
-	hidePage("inventory-page");
-	hidePage("checkout-page");
-	showPage("login-page");
+	firebase.auth().signOut().then(function() {
+        console.log('Signed Out');
+        window.alert("you have been logged out.")
+        // hide both inventory and chckout, show login
+        hidePage("inventory-page");
+	    hidePage("checkout-page");
+        showPage("login-page");
+        
+      }, function(error) {
+        console.error('Sign Out Error', error);
+      });
 	document.getElementById("passwordin").value = "";
 }
 
 function populateInventoryTable(){
-	//TODO: POPULATE THE INVENTORY SCREEN TABLE WITH ITEMS FROM PUBLIC INVENTORY TABLE
+    var frag = document.createDocumentFragment();
+    var table = document.createElement("table");
 }
+
+rootRef.child("inventory").on("child_added", function(snapshot){
+    var itemName = snapshot.child("item_name").val();
+    var itemQuan = snapshot.child("item_quantity").val();
+    var node = document.createElement("tr");
+    var tdName = document.createElement("td");
+    var tdQuan = document.createElement("td");
+    var txtName = document.createTextNode(itemName);
+    var txtQuan = document.createTextNode(itemQuan);
+    tdName.appendChild(txtName);
+    tdQuan.appendChild(txtQuan);
+    node.appendChild(tdName);
+    node.appendChild(tdQuan);
+    document.getElementById("inventory-table").appendChild(node);
+})
 
 function populateCheckoutTable(){
 	//TODO: POPULATE THE CHECKOUT SCREEN TABLE WITH ITEMS FROM THE USER'S CART
 }
 
 function purchase(){
-	//TODO: IMPLEMENT ANY PURCHASING LOGIC
+	
 }
 
 function addItemToCart(itemId) {
