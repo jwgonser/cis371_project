@@ -1,31 +1,31 @@
 .hidden {
-	display: none !important;
+    display: none !important;
 }
 .tblfmt {
-	margin: auto;
+    margin: auto;
 }
 div{
     text-align:center;
 }
 
 button{
-	
+
 }
 .hea{
-	margin: auto;
+    margin: auto;
 }
 .tblfmt tr:nth-child(odd){
-	background-color: thistle;
+    background-color: thistle;
 }
 .tblfmt tr:nth-child(even) {
     background-color: powderblue;
 }
 .tblfmt tr:nth-child(1) {
-	background-color: black;
-	color: white;
+    background-color: black;
+    color: white;
 }
 .hidden {
-	display: none !important;
+    display: none !important;
 }
 
 

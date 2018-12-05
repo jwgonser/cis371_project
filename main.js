@@ -200,8 +200,10 @@ function populateCheckoutTable(snaps) {
 	if (snaps.key != "empty"){
 		var itemName = invPairs[snaps.key];
 		var itemQuan = snaps.val();
+		var id = snaps.key + "2";
         var node2 = document.createElement("tr")
-        node2.id = snaps.key;
+        node2.id = id;
+		console.log(node2.id);
 		var key = snaps.key
 		var tdName = document.createElement("td");
 		var tdQuan = document.createElement("td");
@@ -224,46 +226,50 @@ function populateCheckoutTable(snaps) {
 	
 	console.log("INSIDE POPULATECHECKOUT");
 }
-/*
-function updateCheckoutTable(snap) {
-    if (snap.key != "empty"){
-        var cnode = document.getElementById(snap.key);
-        var ckey = snap.key
 
-        while (cnode.firstChild) {
-            cnode.removeChild(cnode.firstChild);
-        }
-        
-        var cbutton = document.createElement("button");
-        
-        var citemName = invPairs[snap.key];
-        var citemQuan = snap.val();
-        if (citemQuan == 0){
-            ctxtQuan = document.createTextNode("All Removed");
-        }else{
-            ctxtQuan = document.createTextNode(itemQuan);
-        }
-        var ctdName = document.createElement("td");
-        var ctdQuan = document.createElement("td");
-        var ctxtName = document.createTextNode(citemName);
-        var cbutName = document.createTextNode("Remove");
-        ctdName.appendChild(ctxtName);
-        ctdQuan.appendChild(ctxtQuan);
-        cbutton.appendChild(cbutName);
-        cbutton.setAttribute("type", "button")
-        cbutton.setAttribute("onClick", "removeItemFromCart(this.id)");
-        cbutton.setAttribute("id", ckey);
-        cnode.appendChild(ctdName);
-        cnode.appendChild(ctdQuan);
-        if(citemQuan == 0){
-            cnode.appendChild(document.createTextNode("All Removed"));
-        }
-        else {
-            cnode.appendChild(button);
-        }
-    }
-}   
-*/
+function updateCheckoutTable(snap) {
+	var id = snap.key + "2";
+    var node = document.getElementById(id);
+	var quan = snap.val();
+	var itemName = invPairs[snap.key];
+	
+	while(node.firstChild){
+		node.removeChild(node.firstChild);
+	}
+	
+	var tdName = document.createElement("td");
+	var tdQuan = document.createElement("td");
+	var button = document.createElement("button");
+	button.setAttribute("type", "button")
+	button.setAttribute("onClick", "removeItemFromCart(this.id)");
+	button.setAttribute("id", snap.key);
+	
+	var txtName = document.createTextNode(itemName);
+	var txtQuan = document.createTextNode(quan);
+	var butName = document.createTextNode("Remove");
+	
+	tdName.appendChild(txtName);
+	tdQuan.appendChild(txtQuan);
+	button.appendChild(butName);
+	
+	if (quan > 0) {
+		node.appendChild(tdName);
+		node.appendChild(tdQuan);
+		node.appendChild(button);
+	}
+	else {
+		node.parentNode.removeChild(node);
+	}
+	
+} 
+
+function removeCheckoutTable(snap) {
+	var id = snap.key + "2";
+    var node = document.getElementById(id);
+	var quan = snap.val();
+	var itemName = invPairs[snap.key];
+	node.parentNode.removeChild(node);
+}
 
 function activateListeners() {
 
@@ -271,7 +277,14 @@ function activateListeners() {
     rootRef.child("users").child(users[email]).child("user_cart").on("child_added", function(snaps) {
         populateCheckoutTable(snaps);
     })
+	
+	rootRef.child("users").child(users[email]).child("user_cart").on("child_changed", function(snaps) {
+        updateCheckoutTable(snaps);
+    })
     
+	rootRef.child("users").child(users[email]).child("user_cart").on("child_removed", function(snaps) {
+        removeCheckoutTable(snaps);
+    })
     
 }
 
@@ -339,12 +352,16 @@ function removeItemFromCart(itemId) {
                     if(ch.child("user_email").val() == email){
 
                         var temp = ca.val()
-                        if(temp != 0 ){
-                
+                        if(temp != 1 ){
                             if(ca.key == itemId){
                                 rootRef.child('/users').child(ch.key).child('user_cart').child(ca.key).set(temp - 1);
                             }
                         }
+						else {
+							if(ca.key == itemId){
+								rootRef.child('/users').child(ch.key).child('user_cart').child(ca.key).set(null);
+							}
+						}
                     }
                 })
                 
