@@ -31,12 +31,21 @@ function generateUsers(){
         })
     })
 }
+function generateInvPairs(){
+    invPairs = {}
+    rootRef.child('/inventory').once('value').then(function(snapshot){
+        snapshot.forEach(function(ch){
+            invPairs[ch.key] = ch.child("item_name").val()
+        })
+    })
+}
 function login(){
     email = document.getElementById("emailin").value
     var fubar = 0
     console.log(email)
     var password = document.getElementById("passwordin").value;
     generateUsers();
+	generateInvPairs();
     firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
@@ -60,6 +69,7 @@ function login(){
         console.log("womp womp womp")
       }
       console.log(users)
+	  
 }
 
 function logout(){
@@ -161,39 +171,43 @@ rootRef.child("users").child(users[email]).child("user_cart").on("child_added", 
     populateCheckoutTable(snapshot);
 })
 */
-function populateCheckoutTable(){
-    var itemName = snapshot.child("item_name").val();
-    var itemQuan = snapshot.child("item_quantity").val();
-    var key = snapshot.key
-    var txtQuan 
-    if (itemQuan == 0){
-        txtQuan = document.createTextNode("Out of stock");
-    }else{
-        txtQuan = document.createTextNode(itemQuan);
-    }
-    var node = document.createElement("tr");
+function populateCheckoutTable(snapshot) {
+	var itemName = invPair[snapshot.key];
+    var itemQuan = snapshot.val();
+	
+	var key = snapshot.key
+	var node = document.createElement("tr");
     node.id = snapshot.key;
     var tdName = document.createElement("td");
     var tdQuan = document.createElement("td");
-    var button = document.createElement("button");
+	var button = document.createElement("button");
+	button.setAttribute("type", "button")
+    button.setAttribute("onClick", "removeItemFromCart(this.id)");
+    button.setAttribute("id", key);
     var txtName = document.createTextNode(itemName);
 	var butName = document.createTextNode("Remove");
     tdName.appendChild(txtName);
     tdQuan.appendChild(txtQuan);
-    button.appendChild(butName);
-    button.setAttribute("type", "button")
-    button.setAttribute("onClick", "removeItemFromCart(this.id)");
-    button.setAttribute("id", key);
+	button.appendChild(butName);
     node.appendChild(tdName);
     node.appendChild(tdQuan);
-	if(itemQuan == 0){
-		node.appendChild(document.createTextNode("Unavailable"));
-	}
-	else {
-		node.appendChild(button);
-	}
+		
+	node.appendChild(button);
     document.getElementById("inventory-table").appendChild(node);
 }
+
+function updateCheckoutTable(snapshot) {
+
+}
+
+rootRef.child("users").child(users[email]).child("user_cart").on("child_added", function(snapshot) {
+	console.log(email);
+    populateCheckoutTable(snapshot);
+})
+
+rootRef.child("users").child(users[email]).child("user_cart").on("child_removed", function(snapshot) {
+    updateCheckoutTable(snapshot);
+})
 
 function purchase(){
 	
@@ -203,9 +217,7 @@ function addItemToCart(itemId) {
     var cart = {}
     var changed = 0
     var inStock = 1
-    console.log(users)
-    console.log(itemId)
-    console.log(email)
+
 
     rootRef.child('/inventory').once('value').then(function(snapshot){
         snapshot.forEach(function(invent){
@@ -225,9 +237,7 @@ function addItemToCart(itemId) {
             snapshot.forEach(function(ch){
                 ch.child("user_cart").forEach(function(ca){
                     if(ch.child("user_email").val() == email){
-                        console.log(ch.child("user_email").val())
-                        console.log(ca.key)
-                        console.log(ca.val())
+
                         var temp = ca.val()
                         if(ca.key == itemId){
                             changed = 1
@@ -236,8 +246,6 @@ function addItemToCart(itemId) {
                     }
                 })
                 if(ch.child("user_email").val() == email && changed == 0){
-                    console.log("ITEM ID IS UNDER")
-                    console.log(itemId)
                     rootRef.child('/users').child(ch.key).child('user_cart').update({[itemId] : 1})
                 }
                 changed = 0
@@ -266,8 +274,7 @@ function hidePage(pageId){
 	// get element identified by function call
 	var element = document.getElementById(pageId);
 	// add hidden class to element
-	element.classList.add("hidden");
-	console.log("hiding " + pageId);
+	element.classList.add("hidden")
 }
 
 function showPage(pageId){
@@ -275,5 +282,4 @@ function showPage(pageId){
 	var element = document.getElementById(pageId);
 	// remove hidden class from element
 	element.classList.remove("hidden");
-	console.log("showing " + pageId);
 }
