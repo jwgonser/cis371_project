@@ -68,11 +68,16 @@ function logout(){
 function populateInventoryTable(snapshot){
     var itemName = snapshot.child("item_name").val();
     var itemQuan = snapshot.child("item_quantity").val();
+    var txtQuan 
+    if (itemQuan == 0){
+        txtQuan = document.createTextNode("Out of stock");
+    }else{
+        txtQuan = document.createTextNode(itemQuan);
+    }
     var node = document.createElement("tr");
     var tdName = document.createElement("td");
     var tdQuan = document.createElement("td");
     var txtName = document.createTextNode(itemName);
-    var txtQuan = document.createTextNode(itemQuan);
     tdName.appendChild(txtName);
     tdQuan.appendChild(txtQuan);
     node.appendChild(tdName);
@@ -90,10 +95,16 @@ function updateInventoryTable(snapshot){
 	
 	var itemName = snapshot.child("item_name").val();
     var itemQuan = snapshot.child("item_quantity").val();
+    var txtQuan 
+    if (itemQuan == 0){
+        txtQuan = document.createTextNode("Out of stock");
+    }else{
+        txtQuan = document.createTextNode(itemQuan);
+    }
     var tdName = document.createElement("td");
     var tdQuan = document.createElement("td");
     var txtName = document.createTextNode(itemName);
-    var txtQuan = document.createTextNode(itemQuan);
+    
 	tdName.appendChild(txtName);
     tdQuan.appendChild(txtQuan);
     node.appendChild(tdName);
