@@ -69,7 +69,6 @@ function login(){
         console.log("womp womp womp")
       }
       console.log(users)
-	  
 }
 
 function logout(){
@@ -172,42 +171,50 @@ rootRef.child("users").child(users[email]).child("user_cart").on("child_added", 
 })
 */
 function populateCheckoutTable(snapshot) {
-	var itemName = invPair[snapshot.key];
-    var itemQuan = snapshot.val();
 	
-	var key = snapshot.key
-	var node = document.createElement("tr");
-    node.id = snapshot.key;
-    var tdName = document.createElement("td");
-    var tdQuan = document.createElement("td");
-	var button = document.createElement("button");
-	button.setAttribute("type", "button")
-    button.setAttribute("onClick", "removeItemFromCart(this.id)");
-    button.setAttribute("id", key);
-    var txtName = document.createTextNode(itemName);
-	var butName = document.createTextNode("Remove");
-    tdName.appendChild(txtName);
-    tdQuan.appendChild(txtQuan);
-	button.appendChild(butName);
-    node.appendChild(tdName);
-    node.appendChild(tdQuan);
+	if (snapshot.key != "empty"){
+		var itemName = invPairs[snapshot.key];
+		var itemQuan = snapshot.val();
 		
-	node.appendChild(button);
-    document.getElementById("inventory-table").appendChild(node);
+		var key = snapshot.key
+		var node = document.createElement("tr");
+		node.id = snapshot.key;
+		var tdName = document.createElement("td");
+		var tdQuan = document.createElement("td");
+		var button = document.createElement("button");
+		button.setAttribute("type", "button")
+		button.setAttribute("onClick", "removeItemFromCart(this.id)");
+		button.setAttribute("id", key);
+		var txtName = document.createTextNode(itemName);
+		var txtQuan = document.createTextNode(itemQuan);
+		var butName = document.createTextNode("Remove");
+		tdName.appendChild(txtName);
+		tdQuan.appendChild(txtQuan);
+		button.appendChild(butName);
+		node.appendChild(tdName);
+		node.appendChild(tdQuan);
+			
+		node.appendChild(button);
+		document.getElementById("checkout-table").appendChild(node);
+	}
+	
+	console.log("INSIDE POPULATECHECKOUT");
 }
 
 function updateCheckoutTable(snapshot) {
 
 }
 
-rootRef.child("users").child(users[email]).child("user_cart").on("child_added", function(snapshot) {
-	console.log(email);
-    populateCheckoutTable(snapshot);
-})
+	function activateListeners() {
+		rootRef.child("users").child(users[email]).child("user_cart").on("child_added", function(snapshot) {
+			console.log(email);
+			populateCheckoutTable(snapshot);
+		})
 
-rootRef.child("users").child(users[email]).child("user_cart").on("child_removed", function(snapshot) {
-    updateCheckoutTable(snapshot);
-})
+		rootRef.child("users").child(users[email]).child("user_cart").on("child_removed", function(snapshot) {
+			updateCheckoutTable(snapshot);
+		})
+	}
 
 function purchase(){
 	
@@ -262,6 +269,7 @@ function checkout(){
 	// navigate to checkout page from inventory
 	hidePage("inventory-page");
 	showPage("checkout-page");
+	activateListeners();
 }
 
 function toInventory() {
