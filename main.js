@@ -333,7 +333,6 @@ function removeItemFromCart(itemId) {
             }
         })
     })
-    if(inStock = 1){
         rootRef.child('/users').once('value').then(function(snapshot){
             snapshot.forEach(function(ch){
                 ch.child("user_cart").forEach(function(ca){
@@ -341,6 +340,7 @@ function removeItemFromCart(itemId) {
 
                         var temp = ca.val()
                         if(temp != 0 ){
+                
                             if(ca.key == itemId){
                                 rootRef.child('/users').child(ch.key).child('user_cart').child(ca.key).set(temp - 1);
                             }
@@ -350,7 +350,6 @@ function removeItemFromCart(itemId) {
                 
             })
         })
-    }
     
 }
 

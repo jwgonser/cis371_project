@@ -1,13 +1,26 @@
 .hidden {
 	display: none !important;
 }
+.tblfmt {
+	margin: auto;
+}
+div{
+    text-align:center;
+}
+
+button{
+	
+}
+.hea{
+	margin: auto;
+}
 .tblfmt tr:nth-child(odd){
 	background-color: thistle;
 }
 .tblfmt tr:nth-child(even) {
     background-color: powderblue;
 }
-.tblfmt tr:first-of-type {
+.tblfmt tr:nth-child(1) {
 	background-color: black;
 	color: white;
 }
