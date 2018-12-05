@@ -19,17 +19,25 @@ function create(){
 });
     if (errNum == 0){
         var userKey = userRef.push().key;
-        users[email] = userKey;
+        generateUsers();
         userRef.push().set({"user_email" : email, "user_cart" : inv})
         console.log(users)
     }
 }
-
+function generateUsers(){
+    users = {}
+    rootRef.child('/users').once('value').then(function(snapshot){
+        snapshot.forEach(function(ch){
+            users[ch.child("user_email").val()] = ch.key
+        })
+    })
+}
 function login(){
     var email = document.getElementById("emailin").value
     var fubar = 0
     console.log(email)
     var password = document.getElementById("passwordin").value;
+    generateUsers();
     firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;
@@ -52,6 +60,7 @@ function login(){
       } else {
         console.log("womp womp womp")
       }
+      console.log(users)
 }
 
 function logout(){
