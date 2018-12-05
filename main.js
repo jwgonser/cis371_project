@@ -79,6 +79,7 @@ function logout(){
         // hide both inventory and chckout, show login
         hidePage("inventory-page");
 	    hidePage("checkout-page");
+		hidePage("purchase-page");
         showPage("login-page");
         user = null;
       }, function(error) {
@@ -217,7 +218,10 @@ function updateCheckoutTable(snapshot) {
 	}
 
 function purchase(){
-	
+	rootRef.child("users").child(users[email]).child("user_cart").remove();
+	rootRef.child("users").child(users[email]).update({"user_cart" : {"empty" : true}});
+	hidePage("checkout-page");
+	showPage("purchase-page");
 }
 
 function addItemToCart(itemId) {
@@ -262,7 +266,8 @@ function addItemToCart(itemId) {
 }
 
 function removeItemFromCart(itemId) {
-	//TODO: ADD LOGIC TO REMOVE A CHOSEN ITEM FROM USER'S CART
+	var node = document.getElementById(itemId);
+    
 }
 
 function checkout(){
@@ -275,6 +280,7 @@ function checkout(){
 function toInventory() {
 	// navigate back to inventory from checkout page
 	hidePage("checkout-page");
+	hidePage("purchase-page");
 	showPage("inventory-page");
 }
 
